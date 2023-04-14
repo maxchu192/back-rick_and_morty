@@ -1,0 +1,7 @@
+.env
+# dependencias
+/node_modules
+
+node_modules/
+
+config.json
