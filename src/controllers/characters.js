@@ -1,4 +1,5 @@
 const axios = require('axios');
+const {Characters} = require('../database/DB_connection.js')
 
 require('dotenv').config()
 
@@ -6,56 +7,49 @@ const URL = process.env.API_URL
 const STATUS_OK = 200
 const STATUS_ERROR = 404
 
-async function getCharById (req, res) {    
+const getCharById = async (req, res) => {    
     const { id } = req.params;
   try {
-    axios.get(`${URL}${id}`).then(({ data }) => {
-      if (data) {
-        const character = {
-          id: data.id,
-          status: data.status,
-          name: data.name,
-          species: data.species,
-          origin: data.origin?.name,
-          image: data.image,
-          gender: data.gender,
-          location: data.location?.name
-        };
-        res.status(STATUS_OK).json(character);
-      } else {
-        res.status(STATUS_ERROR).json({ message: "character not found" });
-      }
-    });
+    const char = await Characters.findOne({where: {id: id}})
+    res.status(STATUS_OK).json(char.dataValues)
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(STATUS_ERROR).json({ message: error.message });
   }
 }
 
-async function getAllChar(req, res) {
+const getAllChar = async (req, res) => {
+  let aux = []
     try {
-      const {data} = await axios(`${URL}`)
-      console.log(data)
-      if (data) {
-        const characters = data.results.map((ch) => {
-          const character = {
-            id: ch.id,
-            status: ch.status,
-            name: ch.name,
-            species: ch.species,
-            origin: ch.origin?.name,
-            image: ch.image,
-            gender: ch.gender,
-          };
-          return character;
-        });
-        res.status(STATUS_OK).json(characters);
-      } else {
-        res.status(STATUS_ERROR).json({ message: "character not found" });
+      for (let i = 1; i < 43; i++) {
+        const {data} = await axios(`${URL}?page=${i}`)
+        
+        if (data) {
+          const characters = data.results.map((ch) => {
+            const character = {
+              id: ch.id,
+              status: ch.status,
+              name: ch.name,
+              species: ch.species,
+              origin: ch.origin?.name,
+              image: ch.image,
+              gender: ch.gender,
+            };
+            return character;
+          });
+          aux = [...aux, ...characters]
+        } else {
+          res.status(STATUS_ERROR).json({ message: "character not found" });
+        }
       }
+      const char = await Characters.bulkCreate(aux)
+      .then(() => console.log("chars data have been saved"))
+      res.status(STATUS_OK).json(aux);
     } catch (error) {
       res.status(500).json({ message: error });
     }
   }
+ 
+
 
 module.exports = {
     getCharById,

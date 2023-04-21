@@ -1,26 +1,25 @@
 require('dotenv').config();
+const { Users } = require('../database/DB_connection.js')
 
-const EMAIL = process.env.EMAIL;
-const PASSWORD = process.env.PASSWORD;
 const STATUS_OK = 200
-const STATUS_ERROR = 404
+const STATUS_ERROR = 400
 
-function login(req, res) {
+const login = async (req, res) => {
     try {
-        const {email, password}= req.query;
-    if (!email || !password) {
-        return res.status(500).json({message: 'there isn´t a email or password'})
-    }
-    if (email === EMAIL && password === PASSWORD) {
-        res.status(STATUS_OK).json({access: true})
-    } else {
-        res.status(STATUS_OK).json({access: false})
-    }
-    } catch (error) {
-        res.status(STATUS_ERROR).json(error)
-    }
-    
+        const { email, password } = req.query;
+        const aux = { email, password }
 
+        if (!email || !password) {
+            return res.status(500).json({ message: 'there isn´t a email or password' })
+        }
+
+        const [user, created] = await Users.findOrCreate({ where: aux })
+
+        res.status(STATUS_OK).json({ access: true, user})
+
+    } catch (error) {
+        res.status(STATUS_ERROR).json({ access: false })
+    }
 }
 
 module.exports = {

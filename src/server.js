@@ -1,7 +1,6 @@
 const express = require('express');
 const server = express();
 const logger = require('morgan');
-
 const routes = require('./routes/index.js');
 
 server.use(express.json())

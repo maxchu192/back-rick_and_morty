@@ -1,6 +1,19 @@
+const { dbRickAndMorty } = require('./database/DB_connection.js');
+
 const server = require('./server')
+
 const PORT = 3001;
 
-server.listen(PORT, ()=>{
-    console.log(`server raised in port: http://localhost:${PORT}`)
-})
+
+async function main () {
+    server.listen(PORT, console.log(`server raised in port: http://localhost:${PORT}`));
+    
+    try {
+        await dbRickAndMorty.sync({force: true});
+        console.log('Connection has been established successfully.');        
+    } catch (error) {
+        console.log('Unable to connect to the database:', error);        
+    }
+}
+
+main()
