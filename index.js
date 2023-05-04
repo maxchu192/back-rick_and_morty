@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3001;
 
 
 async function main () {
-    server.listen(PORT, console.log(`server raised in port: http://localhost:${PORT}`));
+    server.listen(PORT, console.log(`server raised in port: ${PORT}`));
     
     try {
         await dbRickAndMorty.sync({force: false});
