@@ -1,42 +1,57 @@
-require('dotenv').config()
+const {Users, Characters} = require('../database/DB_connection.js')
 
 const STATUS_OK = 200
 const STATUS_ERROR = 404
 
-let myFavorites = [];
 
-function postFav (req, res) {
-    const {id, name, status, species, gender, origin, image} = req.body;
+async function postFav (req, res) {
+    const {idC} = req.params
+    const {id} = req.body;
+
     try {
-        if (!id || !name || !image) {
-            return res.status(STATUS_ERROR).json({message: 'data not found'})
-        };
-        const character = {
-            id, name, status, species, gender, origin, image
-        };
-        myFavorites.push(character);
-        res.status(STATUS_OK).json(myFavorites)
+        const aux = await Users.findByPk(id)
+        const charFav = await Characters.findByPk(Number(idC))
+        aux.addCharacters(charFav)
+
+        res.status(STATUS_OK).json({id, idC})
     } catch (error) {
-        res.status(STATUS_ERROR).json({error})        
+        res.status(STATUS_ERROR).json({message: error.message})        
     }
 
-    }
-function deleteFav (req, res) {
-    const {id} = req.params;
-    try {
-        if (!id) {
-            return res.status(STATUS_ERROR).json({message: 'id not found'})
-        }
-        const newFav = myFavorites.filter((ch)=>ch.id !== Number(id))
-        myFavorites = newFav
-        res.status(STATUS_OK).json(myFavorites)
+}
+
+async function deleteFav (req, res) {
+    const {id, idC} = req.body;
+
+    try {        
+        const aux = await Users.findByPk(id)
+        const charDel = await Characters.findByPk(idC)
+        aux.removeCharacters(charDel)
+        
+        res.status(STATUS_OK).json({idC})
     } catch (error) {
-        res.status(STATUS_ERROR).json({error})
+        res.status(STATUS_ERROR).json({message: error.message})
     }
          
 }
 
+async function getFav (req, res) {
+    const {id} = req.params;
+
+    try {
+        const aux = await Users.findByPk(Number(id))
+        const aux1 = await aux.getCharacters()
+        res.status(STATUS_OK).json(aux1)
+
+    } catch (error) {
+        res.status(STATUS_ERROR).json({message: error.message})
+        
+    }
+}
+
+
 module.exports = {
     postFav,
-    deleteFav
+    deleteFav,
+    getFav
 }

@@ -45,7 +45,7 @@ const getAllChar = async (req, res) => {
       .then(() => console.log("chars data have been saved"))
       res.status(STATUS_OK).json(aux);
     } catch (error) {
-      res.status(500).json({ message: error });
+      res.status(STATUS_ERROR).json({ message: error });
     }
   }
  

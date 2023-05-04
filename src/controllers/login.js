@@ -5,8 +5,10 @@ const STATUS_OK = 200
 const STATUS_ERROR = 400
 
 const login = async (req, res) => {
+    const { email, password } = req.body;
+
     try {
-        const { email, password } = req.query;
+        
         const aux = { email, password }
 
         if (!email || !password) {
@@ -14,8 +16,9 @@ const login = async (req, res) => {
         }
 
         const [user, created] = await Users.findOrCreate({ where: aux })
+        const id = user.id;
 
-        res.status(STATUS_OK).json({ access: true, user})
+        res.status(STATUS_OK).json({ access: true, id: id})
 
     } catch (error) {
         res.status(STATUS_ERROR).json({ access: false })
