@@ -1,6 +1,6 @@
-const { dbRickAndMorty } = require('./database/DB_connection.js');
+const { dbRickAndMorty } = require('./src/database/DB_connection.js');
 
-const server = require('./server')
+const server = require('./src/server.js')
 
 const PORT = 3001;
 
