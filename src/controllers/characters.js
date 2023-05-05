@@ -21,7 +21,7 @@ const getAllChar = async (req, res) => {
   let aux = []
     try {
       for (let i = 1; i < 43; i++) {
-        const {data} = await axios(`${URL}?page=${i}`)
+        const {data} = await axios(`https://rickandmortyapi.com/api/character?page=${i}`)
         
         if (data) {
           const characters = data.results.map((ch) => {
