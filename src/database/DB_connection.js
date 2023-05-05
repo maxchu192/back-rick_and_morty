@@ -8,7 +8,7 @@ const { PGHOST, PGPASSWORD, PGPORT, PGUSER } = process.env;
 //const deploy = DATABASE_URL.toString()
 
 const dbRickAndMorty = new Sequelize(
-   'postgresql://'+PGUSER+':'+PGPASSWORD+'@'+PGHOST+':'+PGPORT+'/railway',
+   'postgresql://postgres:J7oCFAFWdp4KBP9uAJaf@containers-us-west-57.railway.app:6374/railway',
    { logging: false, native: false }
 );
 
