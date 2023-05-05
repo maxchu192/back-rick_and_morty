@@ -3,10 +3,12 @@ const { Sequelize } = require('sequelize');
 const characters = require('./models/Character.js')
 const users = require('./models/User.js')
 //require('./asociations.js')
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_DEPLOY } = process.env;
+
+const deploy = DB_DEPLOY.toString()
 
 const dbRickAndMorty = new Sequelize(
-   `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/railway`,
+   deploy,
    { logging: false, native: false }
 );
 
