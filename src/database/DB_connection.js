@@ -5,10 +5,10 @@ const users = require('./models/User.js')
 //require('./asociations.js')
 const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_URL } = process.env;
 
-const deploy = DATABASE_URL.toString()
+//const deploy = DATABASE_URL.toString()
 
 const dbRickAndMorty = new Sequelize(
-   deploy,
+   DATABASE_URL,
    { logging: false, native: false }
 );
 
