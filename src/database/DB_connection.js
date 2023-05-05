@@ -6,7 +6,7 @@ const users = require('./models/User.js')
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
 const dbRickAndMorty = new Sequelize(
-   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/rickandmorty`,
+   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/railway`,
    { logging: false, native: false }
 );
 
