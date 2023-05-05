@@ -8,7 +8,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_URL } = process.env;
 //const deploy = DATABASE_URL.toString()
 
 const dbRickAndMorty = new Sequelize(
-   DATABASE_URL.toString(),
+   'postgresql://'+DATABASE_URL,
    { logging: false, native: false }
 );
 
