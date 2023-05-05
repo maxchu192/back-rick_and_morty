@@ -3,12 +3,12 @@ const { Sequelize } = require('sequelize');
 const characters = require('./models/Character.js')
 const users = require('./models/User.js')
 //require('./asociations.js')
-const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_URL } = process.env;
+const { PGHOST, PGPASSWORD, PGPORT, PGUSER } = process.env;
 
 //const deploy = DATABASE_URL.toString()
 
 const dbRickAndMorty = new Sequelize(
-   ''+DATABASE_URL,
+   'postgresql://'+PGUSER+':'+PGPASSWORD+'@'+PGHOST+':'+PGPORT+'/railway',
    { logging: false, native: false }
 );
 
