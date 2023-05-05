@@ -2,10 +2,9 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const characters = require('./models/Character.js')
 const users = require('./models/User.js')
-//require('./asociations.js')
+
 const { PGHOST, PGPASSWORD, PGPORT, PGUSER } = process.env;
 
-//const deploy = DATABASE_URL.toString()
 
 const dbRickAndMorty = new Sequelize(
    'postgresql://postgres:J7oCFAFWdp4KBP9uAJaf@containers-us-west-57.railway.app:6374/railway',
